@@ -16,7 +16,7 @@ const p = project.data;
 const fieldNames = p.fields.slice(0, 2).map((f) => catName(fieldMap.get(f), lang)).filter(Boolean).join(' · ');
 ---
 <a class="card" href={href(lang, `/work/${project.id}`)} data-reveal>
-  <div class:list={['card__media frame', { 'card__media--portrait': p.coverPortrait }]}>
+  <div class:list={['card__media frame reveal-media', { 'card__media--portrait': p.coverPortrait }]} data-cursor>
     <Picture
       src={p.cover}
       alt=""

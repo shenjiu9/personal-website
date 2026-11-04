@@ -73,6 +73,7 @@ const items = await Promise.all(
         return (
           <li
             class="work__item"
+            data-reveal
             data-field={data.fields.join(' ')}
             data-industry={data.industries.join(' ')}
             data-platform={data.platforms.join(' ')}
@@ -80,7 +81,7 @@ const items = await Promise.all(
             data-preview={preview}
           >
             <a class="work__link" href={href(lang, `/work/${p.id}`)}>
-              <div class="work__media frame">
+              <div class="work__media frame reveal-media" data-cursor>
                 <Picture src={data.cover} alt="" formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" loading={i < 3 ? 'eager' : 'lazy'} style={`view-transition-name: cover-${p.id}`} />
               </div>
               <span class="work__title"><span class="work__name">{pick(data.title, lang)}</span> <span class="arrow" aria-hidden="true">→</span></span>

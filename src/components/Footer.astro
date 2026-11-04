@@ -1,6 +1,7 @@
 ---
 import CopyEmail from './CopyEmail.astro';
 import Logo from './Logo.astro';
+import SplitText from './SplitText.astro';
 import { t, type Lang } from '@/i18n';
 interface Props { lang: Lang; email: string; socials: { label: string; url: string }[] }
 const { lang, email, socials } = Astro.props;
@@ -9,7 +10,7 @@ const year = new Date().getFullYear();
 ---
 <footer class="footer section">
   <div class="wrap">
-    <p class="footer__cta display" data-reveal>{d.footer.cta}</p>
+    <p class="footer__cta display" data-reveal><SplitText text={d.footer.cta} step={45} /></p>
     <div class="footer__email" data-reveal>
       <CopyEmail class="footer__mail h2 link" email={email} copied={d.nav.copied} />
       <span class="meta">{d.footer.copy}</span>
@@ -20,6 +21,7 @@ const year = new Date().getFullYear();
       <ul class="footer__social">
         {socials.map((s) => <li><a class="link" href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
       </ul>
+      <p class="meta footer__time">{d.footer.time} <time data-clock>--:--</time> (UTC+8)</p>
       <p class="meta">© {year} vlas · {d.footer.rights}</p>
     </div>
   </div>

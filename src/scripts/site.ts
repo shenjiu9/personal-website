@@ -85,3 +85,75 @@ if (!reduced && matchMedia('(pointer: fine)').matches) {
     requestAnimationFrame(raf);
   });
 }
+
+const fine = matchMedia('(pointer: fine)').matches;
+
+// Hero: upgrade to the WebGL composition on capable desktops, after the page is idle.
+const glHost = document.querySelector<HTMLElement>('[data-hero-gl]');
+if (glHost && fine && !reduced && innerWidth >= 1024) {
+  const canWebGL = (() => { try { return !!document.createElement('canvas').getContext('webgl2'); } catch { return false; } })();
+  const idle = (cb: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 600));
+  if (canWebGL) idle(() => import('./hero-gl').then((m) => m.initHeroGL(glHost)).catch(() => {}));
+}
+
+// Hero composition: layers drift with the pointer by their data-depth.
+const art = document.querySelector<HTMLElement>('[data-parallax]');
+if (art && fine && !reduced) {
+  const layers = [...art.querySelectorAll<SVGGElement>('[data-depth]')];
+  let raf = 0, tx = 0, ty = 0;
+  addEventListener('pointermove', (e) => {
+    tx = e.clientX / innerWidth - 0.5;
+    ty = e.clientY / innerHeight - 0.5;
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      for (const l of layers) {
+        const d = Number(l.dataset.depth) * 28;
+        l.style.transform = `translate(${-tx * d}px, ${-ty * d}px)`;
+      }
+    });
+  });
+}
+
+// Section labels "decode" once as they appear.
+const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·—';
+const scramble = (el: HTMLElement) => {
+  const final = el.textContent ?? '';
+  if (reduced || !final) return;
+  const chars = [...final];
+  let frame = 0;
+  const total = 14;
+  const tick = () => {
+    el.textContent = chars
+      .map((c, i) => (c === ' ' || frame / total > i / chars.length + 0.2 ? c : glyphs[(Math.random() * glyphs.length) | 0]))
+      .join('');
+    if (++frame <= total) setTimeout(tick, 32);
+    else el.textContent = final;
+  };
+  tick();
+};
+const sio = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting) { scramble(e.target as HTMLElement); sio.unobserve(e.target); }
+}, { threshold: 0.6 });
+document.querySelectorAll<HTMLElement>('[data-scramble]').forEach((el) => sio.observe(el));
+
+// "View case" pill trails the pointer over work images.
+const label = document.querySelector<HTMLElement>('[data-cursor-label]');
+if (label && fine) {
+  let raf = 0, x = 0, y = 0;
+  const place = () => { label.style.transform = `translate3d(${x + 14}px, ${y + 14}px, 0)`; raf = 0; };
+  document.querySelectorAll<HTMLElement>('[data-cursor]').forEach((el) => {
+    el.addEventListener('pointerenter', () => label.classList.add('is-on'));
+    el.addEventListener('pointerleave', () => label.classList.remove('is-on'));
+    el.addEventListener('pointermove', (e) => { x = e.clientX; y = e.clientY; if (!raf) raf = requestAnimationFrame(place); });
+  });
+}
+
+// Footer local clock (Beijing time).
+const clock = document.querySelector<HTMLElement>('[data-clock]');
+if (clock) {
+  const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Shanghai' });
+  const tickClock = () => (clock.textContent = fmt.format(new Date()));
+  tickClock();
+  setInterval(tickClock, 30_000);
+}

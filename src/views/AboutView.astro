@@ -29,7 +29,7 @@ const intro = paragraphs(pick(s.about, lang));
   </section>
 
   <section class="wrap section">
-    <div class="section-head"><h2 class="meta">{d.about.services}</h2></div>
+    <div class="section-head" data-reveal><h2 class="meta" data-scramble>{d.about.services}</h2></div>
     <ul class="rows">
       {s.services.map((sv, i) => (
         <li class="grid row" data-reveal>
@@ -42,7 +42,7 @@ const intro = paragraphs(pick(s.about, lang));
   </section>
 
   <section class="wrap section">
-    <div class="section-head"><h2 class="meta">{d.about.experience}</h2></div>
+    <div class="section-head" data-reveal><h2 class="meta" data-scramble>{d.about.experience}</h2></div>
     <ul class="rows">
       {s.experience.map((e) => (
         <li class="grid row" data-reveal>
@@ -56,7 +56,7 @@ const intro = paragraphs(pick(s.about, lang));
 
   {s.clients.length > 0 && (
     <section class="wrap section">
-      <div class="section-head"><h2 class="meta">{d.about.clients}</h2></div>
+      <div class="section-head" data-reveal><h2 class="meta" data-scramble>{d.about.clients}</h2></div>
       <p class="clients h3" data-reveal>{s.clients.map((c) => c.name).join(' / ')}</p>
     </section>
   )}

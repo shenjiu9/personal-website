@@ -4,10 +4,10 @@ const en: typeof zh = {
   htmlLang: 'en',
   siteTitle: 'vlas — Brand & Product Designer',
   siteDescription: 'Portfolio of vlas: digital products, brand identities and design systems. Designing clear, considered digital products & brands.',
-  nav: { work: 'Work', about: 'About', contact: 'Contact', copied: 'Copied', menu: 'Menu', close: 'Close', home: 'Home' },
+  nav: { view: 'View case', work: 'Work', about: 'About', contact: 'Contact', copied: 'Copied', menu: 'Menu', close: 'Close', home: 'Home' },
   langSwitch: { label: '中', aria: '切换到中文' },
   hero: {
-    lines: ['Designing clear, considered', 'digital products & brands.'],
+    lines: ['Designing clear,', 'considered digital', 'products & brands.'],
     role: 'Brand & Product Designer',
     available: 'Available for projects',
     unavailable: 'Currently booked',
@@ -55,7 +55,7 @@ const en: typeof zh = {
     resume: 'Download résumé (PDF)',
     contact: 'Contact',
   },
-  footer: { cta: 'Let’s make something.', copy: 'Click to copy email', rights: 'All rights reserved' },
+  footer: { cta: 'Let’s make something.', copy: 'Click to copy email', rights: 'All rights reserved', time: 'My local time' },
   notFound: { title: 'Page not found', body: 'The page you are looking for may have moved or been removed.', back: 'Back to home' },
 };
 

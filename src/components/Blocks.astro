@@ -20,7 +20,7 @@ let sectionIndex = 0;
       );
     }
     if (b.discriminant === 'fullImage') {
-      return <figure class="b-full" data-reveal><Img src={b.value.image} sizes="(min-width: 1440px) 1360px, 100vw" /><Caption value={b.value.caption} lang={lang} /></figure>;
+      return <figure class="b-full" data-reveal><Img class="drift" src={b.value.image} sizes="(min-width: 1440px) 1360px, 100vw" /><Caption value={b.value.caption} lang={lang} /></figure>;
     }
     if (b.discriminant === 'twoUp') {
       return (

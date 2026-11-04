@@ -1,14 +1,17 @@
 ---
 import Base from '@/layouts/Base.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
+import HeroArt from '@/components/HeroArt.astro';
+import Marquee from '@/components/Marquee.astro';
 import { Image } from 'astro:assets';
 import { t, href, pick, type Lang } from '@/i18n';
-import { getProjects, getCategories, getSettings } from '@/lib/content';
+import { getProjects, getCategories, getSettings, catName } from '@/lib/content';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const d = t(lang);
 const [projects, cats, settings] = await Promise.all([getProjects(), getCategories(), getSettings()]);
 const featured = projects.filter((p) => p.data.featured).slice(0, 6);
+const marquee = [...cats.fields.values()].map((c) => catName(c, lang));
 // Asymmetric rhythm: alternate left/right; landscape covers span 7 cols, portrait covers 4.
 const layout = (portrait: boolean, i: number) => {
   const span = portrait ? 4 : 7;
@@ -19,18 +22,21 @@ const layout = (portrait: boolean, i: number) => {
 ---
 <Base lang={lang} path="/">
   <section class="hero wrap">
+    <div class="hero__art" data-parallax data-hero-gl><HeroArt /></div>
     <h1 class="hero__title display">
       {d.hero.lines.map((line, i) => <span class="hero__line"><span style={`--i:${i}`}>{line}</span></span>)}
     </h1>
     <p class="hero__sub">
       <span>vlas — {d.hero.role}</span>
       {pick(settings.location, lang) && <span class="muted">{pick(settings.location, lang)}</span>}
-      <span class="hero__status"><span class:list={['dot', { 'dot--off': !settings.available }]} aria-hidden="true" />{settings.available ? d.hero.available : d.hero.unavailable}</span>
+      <span class="hero__status"><span class:list={['dot', { 'dot--off': !settings.available, 'dot--pulse': settings.available }]} aria-hidden="true" />{settings.available ? d.hero.available : d.hero.unavailable}</span>
     </p>
   </section>
 
+  <Marquee items={marquee} />
+
   <section class="wrap featured" aria-labelledby="featured-title">
-    <div class="section-head"><h2 id="featured-title" class="meta">{d.home.selected}</h2><span class="meta">{String(featured.length).padStart(2, '0')}</span></div>
+    <div class="section-head" data-reveal><h2 id="featured-title" class="meta" data-scramble>{d.home.selected}</h2><span class="meta">{String(featured.length).padStart(2, '0')}</span></div>
     <ul class="featured__grid">
       {featured.map((p, i) => (
         <li class="featured__item" style={layout(p.data.coverPortrait, i)}>
@@ -42,7 +48,7 @@ const layout = (portrait: boolean, i: number) => {
   </section>
 
   <section class="wrap section" aria-labelledby="services-title">
-    <div class="section-head"><h2 id="services-title" class="meta">{d.home.services}</h2></div>
+    <div class="section-head" data-reveal><h2 id="services-title" class="meta" data-scramble>{d.home.services}</h2></div>
     <ol class="services">
       {settings.services.map((s, i) => (
         <li class="services__row grid" data-reveal>
@@ -56,7 +62,7 @@ const layout = (portrait: boolean, i: number) => {
 
   {settings.clients.length > 0 && (
     <section class="wrap section" aria-labelledby="clients-title">
-      <div class="section-head"><h2 id="clients-title" class="meta">{d.home.clients}</h2></div>
+      <div class="section-head" data-reveal><h2 id="clients-title" class="meta" data-scramble>{d.home.clients}</h2></div>
       <ul class="clients" data-reveal>
         {settings.clients.map((c) => (
           <li>{c.logo ? <Image src={c.logo} alt={c.name} height={32} class="clients__logo" /> : <span>{c.name}</span>}</li>
@@ -67,7 +73,18 @@ const layout = (portrait: boolean, i: number) => {
 </Base>
 
 <style>
-  .hero { min-height: min(70vh, 760px); display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s-4); padding-top: var(--s-12); padding-bottom: var(--s-8); }
+  .hero { position: relative; min-height: min(78vh, 820px); display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s-4); padding-top: var(--s-6); padding-bottom: var(--s-8); }
+  .hero__art { width: min(72%, 340px); margin-left: auto; margin-bottom: calc(var(--s-4) * -1); }
+  .hero__title, .hero__sub { position: relative; z-index: 1; }
+  .hero__art :global(.art) { transition: opacity 900ms var(--ease); }
+  .hero__art :global(.hero-gl) { position: absolute; inset: -12%; width: 124%; height: 124%; opacity: 0; transition: opacity 1200ms var(--ease); }
+  .hero__art:global(.gl-ready) :global(.hero-gl) { opacity: 1; }
+  .hero__art:global(.gl-ready) :global(.art .layer:not(:first-child)) { opacity: 0; transition: opacity 700ms var(--ease); }
+  :global(:root[lang='en']) .hero__title { font-size: clamp(2.5rem, 1rem + 5.4vw, 6.25rem); }
+  @media (min-width: 1024px) {
+    .hero { padding-top: var(--s-12); }
+    .hero__art { position: absolute; right: var(--gutter); top: 50%; translate: 0 -52%; width: min(44vw, 620px); margin: 0; }
+  }
   .hero__title { font-weight: 560; max-width: 15em; }
   .hero__line { display: block; overflow: hidden; padding-bottom: 0.06em; }
   .hero__line > span { display: inline-block; animation: line-in 900ms var(--ease) both; animation-delay: calc(var(--i) * 90ms + 60ms); }

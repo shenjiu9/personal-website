@@ -63,6 +63,7 @@ const ogImage = new URL(image, site).href;
       <slot />
     </main>
     <Footer lang={lang} email={settings.email} socials={settings.socials} />
+    <div class="cursor-label" aria-hidden="true" data-cursor-label>{d.nav.view} →</div>
     <script>import '@/scripts/site.ts';</script>
   </body>
 </html>

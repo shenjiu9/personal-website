@@ -1,0 +1,9 @@
+---
+// Splits text into units (characters for Chinese, words for Latin) for a staggered entrance.
+// Screen readers get the plain text via aria-label.
+interface Props { text: string; class?: string; step?: number }
+const { text, class: cls, step = 28 } = Astro.props;
+const units = /[㐀-鿿]/.test(text) ? [...text] : text.split(/(\s+)/);
+let n = 0;
+---
+<span class:list={['split', cls]}><span class="sr-only">{text}</span><span aria-hidden="true">{units.map((u) => (/^\s+$/.test(u) ? ' ' : <span class="split__u" style={`--d:${n++ * step}ms`}>{u}</span>))}</span></span>

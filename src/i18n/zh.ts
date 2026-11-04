@@ -2,10 +2,10 @@ export default {
   htmlLang: 'zh-CN',
   siteTitle: 'vlas — 品牌与产品设计师',
   siteDescription: 'vlas 的个人作品集：数字产品、品牌识别与设计系统。把复杂的事，设计得清晰而有质感。',
-  nav: { work: '作品', about: '关于', contact: '联系我', copied: '已复制', menu: '菜单', close: '关闭', home: '首页' },
+  nav: { view: '查看案例', work: '作品', about: '关于', contact: '联系我', copied: '已复制', menu: '菜单', close: '关闭', home: '首页' },
   langSwitch: { label: 'EN', aria: 'Switch to English' },
   hero: {
-    lines: ['把复杂的事，', '设计得清晰而有质感。'],
+    lines: ['把复杂的事，', '设计得清晰', '而有质感。'],
     role: '品牌与产品设计师',
     available: '可接新项目',
     unavailable: '暂不接新项目',
@@ -53,6 +53,6 @@ export default {
     resume: '下载简历 PDF',
     contact: '联系方式',
   },
-  footer: { cta: '一起做点什么', copy: '点击复制邮箱', rights: '保留所有权利' },
+  footer: { cta: '一起做点什么', copy: '点击复制邮箱', rights: '保留所有权利', time: '我这里现在是' },
   notFound: { title: '页面不存在', body: '你要找的页面可能已经移动或删除。', back: '回到首页' },
 };

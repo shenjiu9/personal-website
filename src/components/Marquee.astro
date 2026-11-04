@@ -1,0 +1,28 @@
+---
+// Slow ticker of disciplines between the hero and the work. Pauses on hover; static with reduced motion.
+interface Props { items: string[] }
+const { items } = Astro.props;
+const row = [...items, ...items];
+---
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {[0, 1].map(() => (
+      <ul class="marquee__group">
+        {row.map((item, i) => (
+          <li class:list={['marquee__item', { 'marquee__item--outline': i % 2 === 1 }]}>{item}<span class="marquee__dot" /></li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+<style>
+  .marquee { overflow: hidden; border-block: 1px solid var(--line); padding-block: var(--s-3); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee__track { display: flex; width: max-content; animation: scroll 60s linear infinite; }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+  .marquee__group { display: flex; flex: none; }
+  .marquee__item { display: flex; align-items: center; gap: var(--s-4); padding-right: var(--s-4); font-size: var(--fs-h2); font-weight: 560; letter-spacing: -0.02em; white-space: nowrap; line-height: 1.1; }
+  .marquee__item--outline { color: transparent; -webkit-text-stroke: 1px var(--fg); }
+  .marquee__dot { width: 0.22em; height: 0.22em; border-radius: 50%; background: var(--accent); flex: none; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+</style>
