@@ -1,0 +1,77 @@
+internalName: Oat & Co. 包装
+status: published
+featured: false
+order: 5
+title:
+  zh: Oat & Co. 燕麦饮包装系列
+  en: Oat & Co. Packaging Series
+summary:
+  zh: 一个植物奶新品牌的包装系统，三种口味用颜色和形状一眼区分。
+  en: >-
+    A packaging system for a new plant-milk brand where three flavours read
+    apart at a glance.
+client: Oat & Co.
+year: 2023
+role:
+  zh: 包装与平面设计
+  en: Packaging & Graphic Designer
+services:
+  - zh: 包装设计
+    en: Packaging
+  - zh: 平面设计
+    en: Graphic design
+  - zh: 社交媒体视觉
+    en: Social visuals
+cover: ../../assets/projects/oat-and-co-packaging/cover.jpg
+coverPortrait: false
+hero: ../../assets/projects/oat-and-co-packaging/hero.jpg
+challenge:
+  zh: 货架上同类产品超过 40 个，新品牌需要在 2 米外被认出来。
+  en: >-
+    More than 40 competitors share the shelf; a new brand had to be recognisable
+    from two metres away.
+solution:
+  zh: 用大面积纯色与一个简单的圆形窗口展示燕麦质感，口味只靠颜色区分，不堆砌信息。
+  en: >-
+    Large flat colour and a single circular window showing the oat texture;
+    flavours differ by colour alone.
+result:
+  zh: 首批 6 万件两个月售罄，并被 3 家连锁便利店引入。
+  en: >-
+    The first 60,000 units sold out in two months and three convenience chains
+    picked it up.
+fields:
+  - packaging
+  - graphic-design
+platforms:
+  - print
+  - social-media
+industries:
+  - food-beverage
+  - ecommerce-retail
+projectTypes:
+  - commercial
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 货架测试
+        en: Shelf testing
+      text:
+        zh: 我们打印了 8 个方向的实物样盒，在真实货架上测试识别距离。
+        en: >-
+          We printed eight directions as real cartons and tested recognition
+          distance on a live shelf.
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/oat-and-co-packaging/body/1/value/image.jpg
+      caption: {}
+  - discriminant: twoUp
+    value:
+      left: ../../assets/projects/oat-and-co-packaging/body/2/value/left.jpg
+      right: ../../assets/projects/oat-and-co-packaging/body/2/value/right.jpg
+      caption: {}
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/oat-and-co-packaging/body/3/value/image.jpg
+      caption: {}

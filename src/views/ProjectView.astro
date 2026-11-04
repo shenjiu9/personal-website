@@ -1,0 +1,127 @@
+---
+import Base from '@/layouts/Base.astro';
+import Blocks from '@/components/Blocks.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { Picture, getImage } from 'astro:assets';
+import { t, href, pick, paragraphs, type Lang } from '@/i18n';
+import { getProjects, getCategories, catName, dimensions, type Project } from '@/lib/content';
+interface Props { lang: Lang; project: Project }
+const { lang, project } = Astro.props;
+const d = t(lang);
+const p = project.data;
+const [projects, cats] = await Promise.all([getProjects(), getCategories()]);
+const idx = projects.findIndex((x) => x.id === project.id);
+const next = projects[(idx + 1) % projects.length];
+const untranslated = lang === 'en' && !p.title.en;
+const og = (await getImage({ src: p.cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' })).src;
+const tags = dimensions.flatMap((dim) => p[dim].map((id) => catName(cats[dim].get(id), lang))).filter(Boolean);
+const sections = p.body.filter((b) => b.discriminant === 'section').map((b, i) => ({ id: `s-${i + 1}`, label: pick((b as any).value.heading, lang) }));
+const overview = [
+  { label: d.project.challenge, text: pick(p.challenge, lang) },
+  { label: d.project.solution, text: pick(p.solution, lang) },
+  { label: d.project.result, text: pick(p.result, lang) },
+].filter((o) => o.text);
+const services = p.services.map((s) => pick(s, lang)).filter(Boolean);
+---
+<Base lang={lang} title={pick(p.title, lang)} description={pick(p.summary, lang)} image={og} path={`/work/${project.id}`}>
+  <article>
+    <header class="wrap head">
+      {untranslated && <p class="meta fallback">{d.project.fallback}</p>}
+      <h1 class="h1 head__title">{pick(p.title, lang)}</h1>
+      <p class="h3 head__summary">{pick(p.summary, lang)}</p>
+      <dl class="facts">
+        {p.client && <div><dt class="meta">{d.project.client}</dt><dd>{p.client}</dd></div>}
+        <div><dt class="meta">{d.project.year}</dt><dd>{p.year}</dd></div>
+        {pick(p.role, lang) && <div><dt class="meta">{d.project.role}</dt><dd>{pick(p.role, lang)}</dd></div>}
+        {services.length > 0 && <div><dt class="meta">{d.project.services}</dt><dd>{services.join(' · ')}</dd></div>}
+        {p.liveUrl && <div><dt class="meta">Link</dt><dd><a class="link" href={p.liveUrl} target="_blank" rel="noopener noreferrer">{d.project.link} <span class="arrow">↗</span></a></dd></div>}
+      </dl>
+      {tags.length > 0 && <ul class="tags">{tags.map((tg) => <li class="meta">{tg}</li>)}</ul>}
+    </header>
+
+    <div class="wrap">
+      <div class="hero frame">
+        {p.heroVideo ? (
+          <>
+            <video src={p.heroVideo} autoplay muted loop playsinline poster={(await getImage({ src: p.hero, width: 1600, format: 'webp' })).src} style={`view-transition-name: cover-${project.id}`} />
+            <button class="hero__toggle meta" type="button" data-video-toggle data-play={d.project.play} data-pause={d.project.pause}>{d.project.pause}</button>
+          </>
+        ) : (
+          <Picture src={p.hero} alt={pick(p.title, lang)} formats={['avif', 'webp']} widths={[800, 1280, 1920, 2400]} sizes="(min-width: 1440px) 1360px, 100vw" loading="eager" fetchpriority="high" style={`view-transition-name: cover-${project.id}`} />
+        )}
+      </div>
+    </div>
+
+    {overview.length > 0 && (
+      <section class="wrap overview" aria-label={d.project.overview}>
+        {overview.map((o) => (
+          <div class="overview__col" data-reveal>
+            <h2 class="meta">{o.label}</h2>
+            {paragraphs(o.text).map((tx) => <p>{tx}</p>)}
+          </div>
+        ))}
+      </section>
+    )}
+
+    <div class="wrap body">
+      {sections.length > 1 && (
+        <nav class="toc" aria-label={d.project.contents} data-toc-nav>
+          <p class="meta">{d.project.contents}</p>
+          <ol>{sections.map((s) => <li><a href={`#${s.id}`} data-toc-link={s.id}>{s.label}</a></li>)}</ol>
+        </nav>
+      )}
+      <div class="body__content"><Blocks blocks={p.body} lang={lang} /></div>
+    </div>
+
+    {next && next.id !== project.id && (
+      <section class="wrap next section" aria-label={d.project.next}>
+        <div class="section-head"><h2 class="meta">{d.project.next}</h2></div>
+        <ProjectCard project={next} lang={lang} fieldMap={cats.fields} sizes="100vw" transition={false} />
+      </section>
+    )}
+  </article>
+</Base>
+
+<style>
+  .head { padding-top: var(--s-12); padding-bottom: var(--s-8); display: grid; gap: var(--s-4); }
+  .fallback { color: var(--accent); }
+  .head__title { max-width: 14em; }
+  .head__summary { max-width: 34em; font-weight: 420; color: var(--muted); }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
+  .facts dt { margin-bottom: 6px; }
+  .facts dd { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+  .hero { position: relative; aspect-ratio: 16 / 9; }
+  .hero__toggle { position: absolute; right: 16px; bottom: 16px; background: var(--bg); color: var(--fg); padding: 8px 12px; }
+  .overview { display: grid; gap: var(--s-6); padding-top: var(--s-12); }
+  @media (min-width: 1024px) { .overview { grid-template-columns: repeat(3, 1fr); gap: var(--col-gap); } }
+  .overview__col { display: grid; gap: 12px; align-content: start; border-top: 1px solid var(--line); padding-top: var(--s-2); }
+  .body { position: relative; padding-top: var(--s-8); }
+  .toc { display: none; }
+  @media (min-width: 1280px) {
+    .body { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: var(--s-6); }
+    .toc { display: block; position: sticky; top: calc(var(--nav-h) + var(--s-6)); align-self: start; padding-top: var(--s-6); font-size: var(--fs-small); }
+    .toc ol { display: grid; gap: 10px; margin-top: 12px; }
+    .toc a { color: var(--muted); transition: color var(--t-micro) var(--ease); }
+    .toc a:hover, .toc a.is-active { color: var(--fg); }
+    .toc a.is-active::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: middle; }
+  }
+</style>
+
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+  if (links.length) {
+    const map = new Map([...links].map((a) => [a.dataset.tocLink!, a]));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) {
+          links.forEach((a) => a.classList.remove('is-active'));
+          map.get(e.target.id)?.classList.add('is-active');
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    );
+    map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+</script>

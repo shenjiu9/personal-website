@@ -1,0 +1,6 @@
+---
+import { pick, type Bi, type Lang } from '@/i18n';
+interface Props { value: Bi; lang: Lang }
+const text = pick(Astro.props.value, Astro.props.lang);
+---
+{text && <figcaption class="meta" style="padding-top:12px">{text}</figcaption>}

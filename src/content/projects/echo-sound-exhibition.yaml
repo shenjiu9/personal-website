@@ -1,0 +1,78 @@
+internalName: Echo 声音装置展
+status: published
+featured: false
+order: 6
+title:
+  zh: Echo 声音装置展
+  en: Echo — A Sound Exhibition
+summary:
+  zh: 一个把城市声音可视化的展览概念，参观者的脚步会在空间里留下光的回声。
+  en: >-
+    An exhibition concept that visualises city sound: visitors’ footsteps leave
+    echoes of light in the room.
+client: 个人项目
+year: 2023
+role:
+  zh: 概念、空间与动效设计
+  en: Concept, Spatial & Motion Design
+services:
+  - zh: 展陈设计
+    en: Exhibition design
+  - zh: 动效设计
+    en: Motion design
+  - zh: 3D 设计
+    en: 3D design
+cover: ../../assets/projects/echo-sound-exhibition/cover.jpg
+coverPortrait: false
+hero: ../../assets/projects/echo-sound-exhibition/hero.jpg
+challenge:
+  zh: 如何让人"看见"平时被忽略的城市声音？
+  en: How do you make people see the city sounds they usually tune out?
+solution:
+  zh: 用环形光带把声音的频率和强度转译成光，空间随参观者的动作实时变化。
+  en: >-
+    Rings of light translate frequency and volume into light, and the room
+    responds to visitors in real time.
+result:
+  zh: 获得 2023 年度青年设计双年展概念类银奖。
+  en: Silver, concept category, 2023 Young Design Biennale.
+fields:
+  - spatial-exhibition
+  - motion-design
+  - 3d-design
+platforms:
+  - physical-space
+industries:
+  - public-good
+  - culture-tourism
+projectTypes:
+  - concept
+  - personal
+  - award
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 概念
+        en: Concept
+      text:
+        zh: 我们在 12 个街区录制了 40 小时的环境声，并把它们分成"人、车、自然"三类频段。
+        en: >-
+          We recorded 40 hours of ambient sound across 12 blocks and split it
+          into three bands: people, traffic, nature.
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/echo-sound-exhibition/body/1/value/image.jpg
+      caption: {}
+  - discriminant: threeUp
+    value:
+      a: ../../assets/projects/echo-sound-exhibition/body/2/value/a.jpg
+      b: ../../assets/projects/echo-sound-exhibition/body/2/value/b.jpg
+      c: ../../assets/projects/echo-sound-exhibition/body/2/value/c.jpg
+      caption:
+        zh: 光带的三种状态
+        en: Three states of the light rings
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/echo-sound-exhibition/body/3/value/image.jpg
+      caption: {}

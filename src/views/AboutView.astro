@@ -1,0 +1,77 @@
+---
+import Base from '@/layouts/Base.astro';
+import CopyEmail from '@/components/CopyEmail.astro';
+import { t, pick, paragraphs, type Lang } from '@/i18n';
+import { getSettings } from '@/lib/content';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const s = await getSettings();
+const intro = paragraphs(pick(s.about, lang));
+---
+<Base lang={lang} title={d.about.title} path="/about">
+  <section class="wrap about-head">
+    <h1 class="h1">{intro[0]}</h1>
+  </section>
+  <section class="wrap grid about-body">
+    <div class="about-body__text prose" data-reveal>
+      {intro.slice(1).map((p) => <p>{p}</p>)}
+      <div class="about-actions">
+        <CopyEmail class="link" email={s.email} copied={d.nav.copied} />
+        {s.resume && <a class="link" href={s.resume} download>{d.about.resume} <span class="arrow">↓</span></a>}
+      </div>
+    </div>
+    <aside class="about-body__side" data-reveal>
+      <p class="meta">{d.hero.role}</p>
+      {pick(s.location, lang) && <p>{pick(s.location, lang)}</p>}
+      <p class="status"><span class:list={['dot', { 'dot--off': !s.available }]} aria-hidden="true" />{s.available ? d.hero.available : d.hero.unavailable}</p>
+    </aside>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head"><h2 class="meta">{d.about.services}</h2></div>
+    <ul class="rows">
+      {s.services.map((sv, i) => (
+        <li class="grid row" data-reveal>
+          <span class="meta n">{String(i + 1).padStart(2, '0')}</span>
+          <span class="h3 a">{pick(sv.title, lang)}</span>
+          <span class="muted b">{pick(sv.description, lang)}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head"><h2 class="meta">{d.about.experience}</h2></div>
+    <ul class="rows">
+      {s.experience.map((e) => (
+        <li class="grid row" data-reveal>
+          <span class="meta n2">{e.period}</span>
+          <span class="h3 a">{e.company}</span>
+          <span class="muted b">{pick(e.role, lang)}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {s.clients.length > 0 && (
+    <section class="wrap section">
+      <div class="section-head"><h2 class="meta">{d.about.clients}</h2></div>
+      <p class="clients h3" data-reveal>{s.clients.map((c) => c.name).join(' / ')}</p>
+    </section>
+  )}
+</Base>
+<style>
+  .about-head { padding-top: var(--s-12); padding-bottom: var(--s-8); }
+  .about-head h1 { max-width: 16em; }
+  .about-body { row-gap: var(--s-6); }
+  .about-body__text { grid-column: 1 / -1; font-size: 1.125rem; }
+  .about-body__side { grid-column: 1 / -1; display: grid; gap: 8px; align-content: start; font-size: var(--fs-small); }
+  @media (min-width: 1024px) { .about-body__text { grid-column: 5 / span 6; } .about-body__side { grid-column: 1 / span 3; grid-row: 1; } }
+  .about-actions { display: flex; flex-wrap: wrap; gap: var(--s-4); margin-top: var(--s-4); }
+  .status { display: inline-flex; align-items: center; gap: 8px; }
+  .row { align-items: baseline; row-gap: 6px; padding-block: var(--s-3); border-bottom: 1px solid var(--line); }
+  .n, .n2, .a, .b { grid-column: 1 / -1; }
+  @media (min-width: 1024px) { .n { grid-column: 1 / span 1; } .n2 { grid-column: 1 / span 3; } .a { grid-column: 4 / span 4; } .b { grid-column: 9 / span 4; } }
+  .clients { color: var(--muted); font-weight: 480; max-width: 40em; }
+</style>

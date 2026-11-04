@@ -1,0 +1,118 @@
+internalName: Tidewave 潮汐银行
+status: published
+featured: true
+order: 1
+title:
+  zh: 潮汐银行 App 重设计
+  en: Tidewave Banking App
+summary:
+  zh: 为年轻用户重新设计的移动银行体验，把 40 多个功能收拢成 4 个清晰入口。
+  en: >-
+    A mobile banking redesign for a younger audience that folds 40+ features
+    into four clear entry points.
+client: Tidewave Bank
+year: 2025
+role:
+  zh: 产品设计负责人
+  en: Lead Product Designer
+services:
+  - zh: 用户研究
+    en: User research
+  - zh: 交互设计
+    en: Interaction design
+  - zh: UI 设计
+    en: UI design
+  - zh: 设计系统
+    en: Design system
+liveUrl: https://example.com/tidewave
+cover: ../../assets/projects/tidewave-banking-app/cover.jpg
+coverPortrait: false
+hero: ../../assets/projects/tidewave-banking-app/hero.jpg
+challenge:
+  zh: 旧版 App 功能堆叠，新用户首次转账平均需要 6 步，35 岁以下用户的月活连续三个季度下滑。
+  en: >-
+    The old app piled features on top of each other. A first transfer took six
+    steps on average, and under-35 monthly actives had fallen for three
+    quarters.
+solution:
+  zh: 以"今天要做的事"为核心重组信息架构，建立一套可扩展的组件库，并把高频操作压缩到 2 步以内。
+  en: >-
+    We rebuilt the information architecture around "what you need today",
+    shipped a scalable component library and cut frequent tasks to two steps.
+result:
+  zh: 上线 3 个月后，首次转账完成率提升 38%，应用商店评分从 3.6 升至 4.7。
+  en: >-
+    Three months after launch, first-transfer completion rose 38% and the store
+    rating climbed from 3.6 to 4.7.
+fields:
+  - ui-design
+  - ux-design
+platforms:
+  - mobile-app
+industries:
+  - finance
+projectTypes:
+  - commercial
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 调研与洞察
+        en: Research & insight
+      text:
+        zh: |-
+          我们访谈了 24 位 22–34 岁的用户，并分析了 6 个月的埋点数据。
+
+          最大的发现是：用户并不需要更多功能，而是需要在对的时间看到对的那一个。
+        en: >-
+          We interviewed 24 users aged 22–34 and analysed six months of event
+          data.
+
+
+          The biggest finding: people did not want more features, they wanted
+          the right one at the right moment.
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/tidewave-banking-app/body/1/value/image.jpg
+      caption:
+        zh: 新首页：按时间组织的"今天"视图
+        en: 'The new home: a "Today" view organised by time'
+  - discriminant: section
+    value:
+      heading:
+        zh: 设计系统
+        en: Design system
+      text:
+        zh: 为了让 6 个业务团队能并行交付，我们建立了包含 120 个组件的设计系统，并与前端共建 token。
+        en: >-
+          So six product teams could ship in parallel, we built a 120-component
+          system with shared design tokens.
+  - discriminant: threeUp
+    value:
+      a: ../../assets/projects/tidewave-banking-app/body/3/value/a.jpg
+      b: ../../assets/projects/tidewave-banking-app/body/3/value/b.jpg
+      c: ../../assets/projects/tidewave-banking-app/body/3/value/c.jpg
+      caption:
+        zh: 组件、图标与插画规范
+        en: Components, icons and illustration rules
+  - discriminant: textImage
+    value:
+      image: ../../assets/projects/tidewave-banking-app/body/4/value/image.jpg
+      text:
+        zh: 转账流程从 6 步缩短到 2 步。常用联系人、金额建议与确认页被合并到同一屏。
+        en: >-
+          The transfer flow went from six steps to two, merging frequent
+          contacts, suggested amounts and confirmation into one screen.
+      imageSide: right
+  - discriminant: quote
+    value:
+      text:
+        zh: vlas 让一个复杂的金融产品第一次变得"好用"。团队现在仍在沿用这套系统。
+        en: >-
+          vlas made a complex financial product genuinely easy to use for the
+          first time. The team still builds on that system.
+      author: 李然，Tidewave 产品副总裁
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/tidewave-banking-app/body/6/value/image.jpg
+      caption: {}

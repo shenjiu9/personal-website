@@ -1,0 +1,59 @@
+/* Design tokens — change colours, type and spacing here. */
+:root {
+  color-scheme: light dark;
+
+  --bg: #f4f2ee;
+  --fg: #111111;
+  --muted: #6b6b6b;
+  --line: #d9d6d0;
+  --accent: #ff4d00;
+  --surface: #ebe8e2; /* neutral backdrop behind work images */
+
+  --font-sans: 'Inter Variable', Inter, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Source Han Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* fluid type scale */
+  --fs-display: clamp(2.75rem, 1.2rem + 6.6vw, 7.5rem); /* 44 → 120px */
+  --fs-h1: clamp(2.5rem, 1.4rem + 4.6vw, 6rem);         /* 40 → 96px */
+  --fs-h2: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);     /* 28 → 52px */
+  --fs-h3: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);    /* 16 → 18px */
+  --fs-small: 0.9375rem;
+  --fs-meta: 0.75rem;                                    /* 12px mono caps */
+
+  --lh-body: 1.6;
+
+  /* 8px spacing scale */
+  --s-1: 8px; --s-2: 16px; --s-3: 24px; --s-4: 32px; --s-5: 40px; --s-6: 48px;
+  --s-8: 64px; --s-10: 80px; --s-12: 96px;
+  --section: clamp(96px, 6rem + 6vw, 200px);
+
+  /* grid */
+  --gutter: 16px;
+  --col-gap: 16px;
+  --max: 1440px;
+  --measure: 640px;
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-micro: 180ms;
+  --t-enter: 640ms;
+  --t-page: 520ms;
+
+  --nav-h: 64px;
+}
+
+@media (min-width: 768px) { :root { --gutter: 32px; --col-gap: 24px; --nav-h: 72px; } }
+@media (min-width: 1200px) { :root { --gutter: 40px; } }
+
+:root[lang='en'] { --lh-body: 1.5; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0e0e;
+    --fg: #edebe6;
+    --muted: #8a8a8a;
+    --line: #2a2a2a;
+    --surface: #191919;
+  }
+}

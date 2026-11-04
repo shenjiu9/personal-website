@@ -1,0 +1,57 @@
+---
+import Logo from './Logo.astro';
+import CopyEmail from './CopyEmail.astro';
+import { t, href, basePath, type Lang } from '@/i18n';
+interface Props { lang: Lang; email: string; altPath?: string }
+const { lang, email } = Astro.props;
+const d = t(lang);
+const path = basePath(Astro.url.pathname);
+const other: Lang = lang === 'zh' ? 'en' : 'zh';
+const altPath = Astro.props.altPath ?? path;
+const isWork = path.startsWith('/work');
+const isAbout = path.startsWith('/about');
+---
+<header class="nav" data-nav>
+  <div class="wrap nav__bar">
+    <a href={href(lang, '/')} class="nav__logo" aria-label={`vlas — ${d.nav.home}`}><Logo /></a>
+    <nav class="nav__links" aria-label="Primary">
+      <a class="link" href={href(lang, '/work')} aria-current={isWork ? 'page' : undefined}>{d.nav.work}</a>
+      <a class="link" href={href(lang, '/about')} aria-current={isAbout ? 'page' : undefined}>{d.nav.about}</a>
+      <CopyEmail class="link" email={email} label={d.nav.contact} copied={d.nav.copied} />
+      <a class="nav__lang meta" href={href(other, altPath)} hreflang={other === 'zh' ? 'zh-CN' : 'en'} lang={other === 'zh' ? 'zh-CN' : 'en'} aria-label={d.langSwitch.aria} data-lang-switch={other}>
+        <span class:list={{ on: lang === 'zh' }}>中</span> / <span class:list={{ on: lang === 'en' }}>EN</span>
+      </a>
+    </nav>
+    <button class="nav__toggle meta" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle data-open={d.nav.menu} data-close={d.nav.close}>{d.nav.menu}</button>
+  </div>
+  <div class="menu" id="mobile-menu" hidden data-menu>
+    <nav class="wrap menu__links" aria-label="Mobile">
+      <a href={href(lang, '/')}>{d.nav.home}</a>
+      <a href={href(lang, '/work')}>{d.nav.work}</a>
+      <a href={href(lang, '/about')}>{d.nav.about}</a>
+      <CopyEmail email={email} label={d.nav.contact} copied={d.nav.copied} />
+      <a class="meta" href={href(other, altPath)} lang={other === 'zh' ? 'zh-CN' : 'en'} data-lang-switch={other}>{lang === 'zh' ? 'English' : '中文'}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: border-color var(--t-micro) var(--ease); view-transition-name: site-nav; }
+  .nav.is-scrolled { border-bottom-color: var(--line); }
+  .nav__bar { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); transition: height var(--t-micro) var(--ease); }
+  .nav.is-scrolled .nav__bar { height: calc(var(--nav-h) - 12px); }
+  .nav__logo { display: block; padding-block: 8px; }
+  .nav__links { display: none; align-items: center; gap: var(--s-4); font-size: var(--fs-small); }
+  .nav__lang span { transition: color var(--t-micro) var(--ease); }
+  .nav__lang span.on { color: var(--fg); }
+  .nav__lang:hover span:not(.on) { color: var(--accent); }
+  .nav__toggle { padding: 12px 0 12px 12px; color: var(--fg); }
+  .menu { position: fixed; inset: var(--nav-h) 0 0 0; background: var(--bg); z-index: 49; padding-top: var(--s-6); }
+  .menu__links { display: flex; flex-direction: column; gap: var(--s-2); font-size: var(--fs-h2); font-weight: 560; letter-spacing: -0.02em; }
+  .menu__links :global(button) { text-align: left; }
+  .menu__links .meta { margin-top: var(--s-4); font-size: var(--fs-small); }
+  @media (min-width: 768px) {
+    .nav__links { display: flex; }
+    .nav__toggle, .menu { display: none !important; }
+  }
+</style>

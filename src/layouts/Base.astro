@@ -1,0 +1,68 @@
+---
+import '@fontsource-variable/inter/opsz.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@/styles/global.css';
+import Nav from '@/components/Nav.astro';
+import Footer from '@/components/Footer.astro';
+import { t, href, basePath, type Lang } from '@/i18n';
+import { getSettings } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  image?: string;
+  /** language-neutral path of this page, e.g. /work/kiln */
+  path?: string;
+  noindex?: boolean;
+}
+const { lang, title, description, image = '/og-default.png', noindex = false } = Astro.props;
+const d = t(lang);
+const settings = await getSettings();
+const path = Astro.props.path ?? basePath(Astro.url.pathname);
+const site = Astro.site ?? new URL('https://vlas.design');
+const canonical = new URL(href(lang, path), site).href;
+const alt = (l: Lang) => new URL(href(l, path), site).href;
+const fullTitle = title ? `${title} — vlas` : d.siteTitle;
+const desc = description ?? d.siteDescription;
+const ogImage = new URL(image, site).href;
+---
+<!doctype html>
+<html lang={d.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-CN" href={alt('zh')} />
+    <link rel="alternate" hreflang="en" href={alt('en')} />
+    <link rel="alternate" hreflang="x-default" href={alt('zh')} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0e0e" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="vlas" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <Nav lang={lang} email={settings.email} altPath={path} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} email={settings.email} socials={settings.socials} />
+    <script>import '@/scripts/site.ts';</script>
+  </body>
+</html>

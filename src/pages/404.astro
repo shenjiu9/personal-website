@@ -1,0 +1,18 @@
+---
+import Base from '@/layouts/Base.astro';
+import { t } from '@/i18n';
+const zh = t('zh').notFound;
+const en = t('en').notFound;
+---
+<Base lang="zh" title="404" path="/" noindex>
+  <section class="wrap nf">
+    <p class="meta">404</p>
+    <h1 class="h1">{zh.title}<br /><span class="muted" lang="en">{en.title}</span></h1>
+    <p>{zh.body}<br /><span class="muted" lang="en">{en.body}</span></p>
+    <p class="nf__links"><a class="link" href="/">{zh.back} →</a><a class="link" href="/en/" lang="en">{en.back} →</a></p>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 60vh; display: grid; align-content: center; gap: var(--s-4); padding-block: var(--s-12); }
+  .nf__links { display: flex; gap: var(--s-4); }
+</style>

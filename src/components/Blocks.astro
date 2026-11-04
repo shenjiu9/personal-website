@@ -1,0 +1,82 @@
+---
+import Img from './Img.astro';
+import Caption from './Caption.astro';
+import { pick, paragraphs, type Lang } from '@/i18n';
+import type { Project } from '@/lib/content';
+interface Props { blocks: Project['data']['body']; lang: Lang }
+const { blocks, lang } = Astro.props;
+let sectionIndex = 0;
+---
+<div class="blocks">
+  {blocks.map((b) => {
+    if (b.discriminant === 'section') {
+      sectionIndex += 1;
+      const id = `s-${sectionIndex}`;
+      return (
+        <section class="b-section grid" id={id} data-toc={pick(b.value.heading, lang)} data-reveal>
+          <h2 class="b-section__title h2"><span class="meta">{String(sectionIndex).padStart(2, '0')}</span>{pick(b.value.heading, lang)}</h2>
+          <div class="b-section__text prose">{paragraphs(pick(b.value.text, lang)).map((p) => <p>{p}</p>)}</div>
+        </section>
+      );
+    }
+    if (b.discriminant === 'fullImage') {
+      return <figure class="b-full" data-reveal><Img src={b.value.image} sizes="(min-width: 1440px) 1360px, 100vw" /><Caption value={b.value.caption} lang={lang} /></figure>;
+    }
+    if (b.discriminant === 'twoUp') {
+      return (
+        <figure data-reveal>
+          <div class="b-two"><Img src={b.value.left} sizes="(min-width: 768px) 50vw, 100vw" ratio="4/5" /><Img src={b.value.right} sizes="(min-width: 768px) 50vw, 100vw" ratio="4/5" /></div>
+          <Caption value={b.value.caption} lang={lang} />
+        </figure>
+      );
+    }
+    if (b.discriminant === 'threeUp') {
+      return (
+        <figure data-reveal>
+          <div class="b-three"><Img src={b.value.a} sizes="(min-width: 768px) 33vw, 100vw" ratio="4/5" /><Img src={b.value.b} sizes="(min-width: 768px) 33vw, 100vw" ratio="4/5" /><Img src={b.value.c} sizes="(min-width: 768px) 33vw, 100vw" ratio="4/5" /></div>
+          <Caption value={b.value.caption} lang={lang} />
+        </figure>
+      );
+    }
+    if (b.discriminant === 'textImage') {
+      return (
+        <div class:list={['b-ti grid', `b-ti--${b.value.imageSide}`]} data-reveal>
+          <Img class="b-ti__img" src={b.value.image} sizes="(min-width: 1024px) 55vw, 100vw" ratio="5/4" />
+          <div class="b-ti__text prose">{paragraphs(pick(b.value.text, lang)).map((p) => <p>{p}</p>)}</div>
+        </div>
+      );
+    }
+    if (b.discriminant === 'quote') {
+      return (
+        <blockquote class="b-quote" data-reveal>
+          <p class="h2">“{pick(b.value.text, lang)}”</p>
+          {b.value.author && <footer class="meta">— {b.value.author}</footer>}
+        </blockquote>
+      );
+    }
+    return null;
+  })}
+</div>
+<style>
+  .blocks { display: flex; flex-direction: column; gap: var(--s-12); }
+  .b-section { row-gap: var(--s-3); padding-top: var(--s-6); }
+  .b-section__title { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; }
+  .b-section__text { grid-column: 1 / -1; color: var(--fg); }
+  @media (min-width: 1024px) {
+    .b-section__title { grid-column: 1 / span 5; }
+    .b-section__text { grid-column: 7 / span 6; padding-top: 30px; }
+  }
+  .b-two, .b-three { display: grid; gap: var(--col-gap); }
+  @media (min-width: 768px) { .b-two { grid-template-columns: 1fr 1fr; } .b-three { grid-template-columns: repeat(3, 1fr); } }
+  .b-ti { row-gap: var(--s-3); align-items: center; }
+  :global(.b-ti__img) { grid-column: 1 / -1; }
+  .b-ti__text { grid-column: 1 / -1; }
+  @media (min-width: 1024px) {
+    .b-ti--right :global(.b-ti__img) { grid-column: 6 / -1; grid-row: 1; }
+    .b-ti--right .b-ti__text { grid-column: 1 / span 4; grid-row: 1; }
+    .b-ti--left :global(.b-ti__img) { grid-column: 1 / span 7; grid-row: 1; }
+    .b-ti--left .b-ti__text { grid-column: 9 / -1; grid-row: 1; }
+  }
+  .b-quote { max-width: 1000px; padding-block: var(--s-6); border-top: 1px solid var(--line); }
+  .b-quote p { font-weight: 480; margin-bottom: var(--s-3); }
+</style>
