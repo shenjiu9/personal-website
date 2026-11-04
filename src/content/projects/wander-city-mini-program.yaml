@@ -1,0 +1,86 @@
+internalName: 城市漫游小程序
+status: published
+featured: true
+order: 4
+title:
+  zh: 城市漫游 · 文旅小程序
+  en: Wander City Mini Program
+summary:
+  zh: 为一座历史古城设计的导览小程序，把 30 条散落的步行路线串成一张会讲故事的地图。
+  en: >-
+    A guide for a historic city that turns 30 scattered walking routes into one
+    storytelling map.
+client: 城市文旅局
+year: 2024
+role:
+  zh: UI / UX 设计师、插画
+  en: UI/UX Designer & Illustrator
+services:
+  - zh: 交互设计
+    en: Interaction design
+  - zh: UI 设计
+    en: UI design
+  - zh: 插画
+    en: Illustration
+cover: ../../assets/projects/wander-city-mini-program/cover.jpg
+coverPortrait: true
+hero: ../../assets/projects/wander-city-mini-program/hero.jpg
+challenge:
+  zh: 游客大多只去 3 个热门景点，老城区的街巷与小店几乎没人知道。
+  en: >-
+    Most visitors only saw three landmarks; the old town lanes and small shops
+    went unnoticed.
+solution:
+  zh: 以手绘地图为界面主体，按时长与兴趣推荐路线，并在路过的地点推送一段 30 秒的故事。
+  en: >-
+    A hand-drawn map is the interface. Routes are suggested by time and
+    interest, and each place you pass tells a 30-second story.
+result:
+  zh: 上线首个假期使用人次 46 万，老城区小店客流平均提升 22%。
+  en: >-
+    The guide served 460,000 visits in its first holiday, and foot traffic to
+    old-town shops rose 22%.
+fields:
+  - ui-design
+  - illustration
+  - ux-design
+platforms:
+  - mini-program
+industries:
+  - culture-tourism
+projectTypes:
+  - commercial
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 手绘地图
+        en: A hand-drawn map
+      text:
+        zh: 地图不追求精确，而是突出值得停留的地方。所有插画都是矢量绘制，可随缩放显示不同细节。
+        en: >-
+          The map favours places worth stopping at over precision. Every
+          illustration is vector, revealing more detail as you zoom.
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/wander-city-mini-program/body/1/value/image.jpg
+      caption: {}
+  - discriminant: textImage
+    value:
+      image: ../../assets/projects/wander-city-mini-program/body/2/value/image.jpg
+      text:
+        zh: 路线卡片显示时长、坡度和沿途故事数量，帮助游客在 3 秒内做出选择。
+        en: >-
+          Route cards show duration, slope and story count so visitors can
+          choose in three seconds.
+      imageSide: right
+  - discriminant: threeUp
+    value:
+      a: ../../assets/projects/wander-city-mini-program/body/3/value/a.jpg
+      b: ../../assets/projects/wander-city-mini-program/body/3/value/b.jpg
+      c: ../../assets/projects/wander-city-mini-program/body/3/value/c.jpg
+      caption: {}
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/wander-city-mini-program/body/4/value/image.jpg
+      caption: {}

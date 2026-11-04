@@ -1,0 +1,47 @@
+---
+import { Picture } from 'astro:assets';
+import { href, pick, type Lang } from '@/i18n';
+import { catName, type Category, type Project } from '@/lib/content';
+interface Props {
+  project: Project;
+  lang: Lang;
+  fieldMap: Map<string, Category>;
+  index?: number;
+  sizes?: string;
+  eager?: boolean;
+  transition?: boolean;
+}
+const { project, lang, fieldMap, index, sizes = '(min-width: 1024px) 50vw, 100vw', eager = false, transition = true } = Astro.props;
+const p = project.data;
+const fieldNames = p.fields.slice(0, 2).map((f) => catName(fieldMap.get(f), lang)).filter(Boolean).join(' · ');
+---
+<a class="card" href={href(lang, `/work/${project.id}`)} data-reveal>
+  <div class:list={['card__media frame reveal-media', { 'card__media--portrait': p.coverPortrait }]} data-cursor>
+    <Picture
+      src={p.cover}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[480, 800, 1200, 1600]}
+      sizes={sizes}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      style={transition ? `view-transition-name: cover-${project.id}` : undefined}
+    />
+  </div>
+  <div class="card__meta">
+    <h3 class="card__title h3">{index !== undefined && <span class="meta card__index">{String(index + 1).padStart(2, '0')}</span>}{pick(p.title, lang)} <span class="arrow" aria-hidden="true">→</span></h3>
+    <p class="meta">{[p.client, fieldNames, p.year].filter(Boolean).join(' / ')}</p>
+  </div>
+</a>
+<style>
+  .card { display: block; }
+  .card__media { aspect-ratio: 16 / 10; }
+  .card__media--portrait { aspect-ratio: 4 / 5; }
+  .card__media :global(img) { transition: transform 700ms var(--ease); }
+  .card:hover .card__media :global(img) { transform: scale(1.03); }
+  .card__meta { display: flex; flex-direction: column; gap: 6px; padding-top: var(--s-2); }
+  .card__title { display: flex; align-items: baseline; gap: 12px; font-weight: 540; }
+  .card__index { flex: none; }
+  .card:hover .card__title { color: var(--fg); }
+  .card:hover .arrow { color: var(--accent); }
+</style>

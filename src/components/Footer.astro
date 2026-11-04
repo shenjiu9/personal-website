@@ -1,0 +1,37 @@
+---
+import CopyEmail from './CopyEmail.astro';
+import Logo from './Logo.astro';
+import SplitText from './SplitText.astro';
+import { t, type Lang } from '@/i18n';
+interface Props { lang: Lang; email: string; socials: { label: string; url: string }[] }
+const { lang, email, socials } = Astro.props;
+const d = t(lang);
+const year = new Date().getFullYear();
+---
+<footer class="footer section">
+  <div class="wrap">
+    <p class="footer__cta display" data-reveal><SplitText text={d.footer.cta} step={45} /></p>
+    <div class="footer__email" data-reveal>
+      <CopyEmail class="footer__mail h2 link" email={email} copied={d.nav.copied} />
+      <span class="meta">{d.footer.copy}</span>
+    </div>
+    <hr class="rule" />
+    <div class="footer__bottom">
+      <Logo class="footer__logo" />
+      <ul class="footer__social">
+        {socials.map((s) => <li><a class="link" href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
+      </ul>
+      <p class="meta footer__time">{d.footer.time} <time data-clock>--:--</time> (UTC+8)</p>
+      <p class="meta">© {year} vlas · {d.footer.rights}</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .footer { padding-bottom: var(--s-4); }
+  .footer__cta { margin-bottom: var(--s-4); }
+  .footer__email { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-2) var(--s-3); margin-bottom: var(--s-12); }
+  .footer__mail { font-weight: 500; letter-spacing: -0.02em; text-align: left; overflow-wrap: anywhere; }
+  .footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); padding-top: var(--s-3); font-size: var(--fs-small); }
+  .footer__social { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-3); }
+  :global(.footer__logo) { height: 18px; }
+</style>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 232 112" fill="none">
+  <title>vlas</title>
+  <defs><clipPath id="vc"><rect x="-10" y="-10" width="66" height="130"/></clipPath></defs>
+  <g stroke="#111111" stroke-width="12" stroke-linecap="butt" stroke-linejoin="miter">
+    <!-- v whose right arm lands on the l stem: v and l share one joint -->
+    <path d="M2 44 L25 100 L57 26" clip-path="url(#vc)"/>
+    <path d="M56 0 V100"/>
+    <!-- a (single storey) -->
+    <circle cx="102" cy="72" r="22"/>
+    <path d="M124 46 V100"/>
+    <!-- s -->
+    <path d="M176 52 C170 44 146 44 146 58 C146 72 178 68 178 86 C178 100 152 100 146 90"/>
+  </g>
+  <circle cx="202" cy="94" r="7" fill="#FF4D00"/>
+</svg>

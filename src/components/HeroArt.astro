@@ -1,0 +1,70 @@
+---
+// Signature hero composition built from the logo's own primitives:
+// the v diagonal, the l stem, the a circle and the orange dot, drawn like a construction sketch.
+// Layers move a little with the pointer (data-depth); everything is decorative (aria-hidden).
+const crosses = Array.from({ length: 5 }, (_, r) => Array.from({ length: 5 }, (_, c) => ({ x: 60 + c * 120, y: 60 + r * 120 }))).flat();
+---
+<div class="art" aria-hidden="true">
+  <svg class="art__svg" viewBox="0 0 600 600" fill="none">
+    <g class="layer" data-depth="0.15">
+      {crosses.map((p) => <path class="cross" d={`M${p.x - 5} ${p.y}H${p.x + 5}M${p.x} ${p.y - 5}V${p.y + 5}`} />)}
+    </g>
+    <g class="layer" data-depth="0.35">
+      <circle class="ring draw" cx="330" cy="330" r="210" pathLength="1" />
+      <circle class="ring-dash" cx="330" cy="330" r="236" />
+      <path class="guide draw" d="M90 330 H570" pathLength="1" />
+      <path class="guide draw" d="M330 90 V570" pathLength="1" />
+      <text class="label" x="350" y="112">Ø 420</text>
+      <text class="label" x="96" y="318">a</text>
+    </g>
+    <g class="layer" data-depth="0.7">
+      <path class="half" d="M250 400 A 110 110 0 0 0 470 400 Z" />
+      <path class="stroke draw" d="M120 150 L262 520" pathLength="1" />
+      <path class="stroke draw" d="M470 70 V520" pathLength="1" />
+      <text class="label" x="138" y="140">v · 69°</text>
+      <text class="label" x="484" y="84">l</text>
+    </g>
+    <g class="layer" data-depth="1.1">
+      <circle class="dot-drop" cx="530" cy="505" r="17" />
+      <text class="label label--accent" x="502" y="560">.</text>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .art { position: relative; width: 100%; aspect-ratio: 1; pointer-events: none; }
+  .art__svg { width: 100%; height: 100%; overflow: visible; }
+  .layer { transition: transform 900ms var(--ease); will-change: transform; }
+  .cross { stroke: var(--line); stroke-width: 1.5; }
+  .ring { stroke: var(--fg); stroke-width: 1.5; }
+  .ring-dash { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 10; transform-origin: 330px 330px; animation: spin 80s linear infinite; opacity: 0.7; }
+  .guide { stroke: var(--line); stroke-width: 1; }
+  .stroke { stroke: var(--fg); stroke-width: 26; }
+  .half { fill: var(--fg); transform-origin: 360px 400px; animation: rise 1100ms var(--ease) 700ms both; }
+  .dot-drop { fill: var(--accent); animation: drop 1200ms cubic-bezier(0.3, 0, 0.2, 1) 1100ms both; }
+  .label { font-family: var(--font-mono); font-size: 13px; fill: var(--muted); letter-spacing: 0.06em; animation: fade 600ms var(--ease) 1400ms both; }
+  .label--accent { fill: var(--accent); font-size: 0; }
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1400ms var(--ease) both; }
+  .guide.draw { animation-duration: 1800ms; }
+  .stroke.draw { animation-delay: 250ms; }
+  .stroke.draw + .stroke.draw { animation-delay: 450ms; }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes rise { from { transform: scaleY(0); } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes drop {
+    0% { transform: translateY(-460px); opacity: 0; }
+    10% { opacity: 1; }
+    55% { transform: translateY(0); }
+    70% { transform: translateY(-46px); }
+    85% { transform: translateY(0); }
+    93% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .draw { stroke-dashoffset: 0; animation: none; }
+    .half, .dot-drop, .ring-dash { animation: none; }
+    .label { animation: fade 300ms linear both; }
+  }
+</style>

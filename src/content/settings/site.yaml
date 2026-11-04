@@ -1,0 +1,84 @@
+email: hello@vlas.design
+available: true
+location:
+  zh: 中国 · 远程合作
+  en: China · Working remotely
+about:
+  zh: '你好，我是 vlas，一名专注数字产品与品牌的设计师。
+
+
+    过去 6 年，我和金融、科技、文旅与消费品牌合作，把复杂的问题拆解成清晰、好用、有质感的体验。我相信好的设计不需要解释，它只是让事情变得更顺。
+
+
+    我可以独立负责从调研、策略到视觉落地的完整流程，也很享受和工程、市场团队一起把产品做出来。'
+  en: 'Hi, I’m vlas, a designer working across digital products and brands.
+
+
+    For six years I have worked with finance, tech, tourism and consumer brands, turning complex problems into clear, usable and well-crafted experiences. Good design shouldn’t need explaining; it should just make things work better.
+
+
+    I can own the whole process from research and strategy to final visuals, and I enjoy building products alongside engineering and marketing teams.'
+services:
+- title:
+    zh: 产品设计
+    en: Product design
+  description:
+    zh: App、Web 与 SaaS 的体验与界面设计
+    en: Experience and interface design for apps, web and SaaS
+- title:
+    zh: 品牌识别
+    en: Brand identity
+  description:
+    zh: 标志、视觉系统与品牌规范
+    en: Marks, visual systems and brand guidelines
+- title:
+    zh: 设计系统
+    en: Design systems
+  description:
+    zh: 可扩展的组件库与设计 token
+    en: Scalable component libraries and design tokens
+- title:
+    zh: 包装与平面
+    en: Packaging & print
+  description:
+    zh: 从货架到海报的视觉落地
+    en: Visual execution from shelf to poster
+experience:
+- period: 2023 — 至今 / Now
+  company: 独立设计师 Independent
+  role:
+    zh: 品牌与产品设计
+    en: Brand & Product Design
+- period: 2020 — 2023
+  company: Northlight
+  role:
+    zh: 高级产品设计师
+    en: Senior Product Designer
+- period: 2018 — 2020
+  company: Studio Form
+  role:
+    zh: 视觉设计师
+    en: Visual Designer
+clients:
+- name: Tidewave Bank
+  logo: null
+- name: Kiln Studio
+  logo: null
+- name: Northlight
+  logo: null
+- name: Oat & Co.
+  logo: null
+- name: 城市文旅局
+  logo: null
+- name: Studio Form
+  logo: null
+socials:
+- label: Dribbble
+  url: https://dribbble.com/
+- label: Behance
+  url: https://www.behance.net/
+- label: 站酷 ZCOOL
+  url: https://www.zcool.com.cn/
+- label: LinkedIn
+  url: https://www.linkedin.com/
+resume: null

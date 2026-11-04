@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <title>vlas mark</title>
+  <rect width="120" height="120" fill="#111111"/>
+  <defs><clipPath id="mc"><rect x="0" y="0" width="70" height="120"/></clipPath></defs>
+  <g stroke="#F4F2EE" stroke-width="12" stroke-linejoin="miter">
+    <path d="M22 50 L43 96 L71 34" clip-path="url(#mc)"/>
+    <path d="M70 24 V96"/>
+  </g>
+  <circle cx="92" cy="90" r="7" fill="#FF4D00"/>
+</svg>

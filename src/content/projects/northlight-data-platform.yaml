@@ -1,0 +1,93 @@
+internalName: Northlight 数据平台
+status: published
+featured: true
+order: 3
+title:
+  zh: Northlight 数据平台
+  en: Northlight Data Platform
+summary:
+  zh: 面向运营团队的 SaaS 数据平台，让非技术人员也能在 5 分钟内搭出一张看板。
+  en: >-
+    A SaaS analytics platform that lets non-technical operators build a
+    dashboard in five minutes.
+client: Northlight
+year: 2024
+role:
+  zh: 高级产品设计师
+  en: Senior Product Designer
+services:
+  - zh: 产品策略
+    en: Product strategy
+  - zh: 交互设计
+    en: Interaction design
+  - zh: 数据可视化
+    en: Data visualisation
+liveUrl: https://example.com/northlight
+cover: ../../assets/projects/northlight-data-platform/cover.jpg
+coverPortrait: false
+hero: ../../assets/projects/northlight-data-platform/hero.jpg
+challenge:
+  zh: 原有产品依赖 SQL，80% 的看板由数据团队代建，需求排期长达两周。
+  en: >-
+    The product depended on SQL, so the data team built 80% of dashboards and
+    requests queued for two weeks.
+solution:
+  zh: 设计了拖拽式查询构建器和一套图表语法，让图表类型由数据形状自动推荐。
+  en: >-
+    We designed a drag-and-drop query builder and a chart grammar that
+    recommends a chart from the shape of the data.
+result:
+  zh: 自助搭建的看板占比从 20% 提升到 71%，获得 2024 年度 Red Dot 传达设计奖。
+  en: >-
+    Self-built dashboards rose from 20% to 71%, and the work won a 2024 Red Dot
+    communication award.
+fields:
+  - ui-design
+  - ux-design
+  - data-visualization
+platforms:
+  - web
+  - desktop
+industries:
+  - tech-saas
+projectTypes:
+  - commercial
+  - award
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 问题定义
+        en: Framing the problem
+      text:
+        zh: 我们跟随 9 位运营人员工作了两周，记录他们每一次"去找数据同学"的时刻。
+        en: >-
+          We shadowed nine operators for two weeks and logged every time they
+          had to "ask the data team".
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/northlight-data-platform/body/1/value/image.jpg
+      caption:
+        zh: 查询构建器
+        en: The query builder
+  - discriminant: twoUp
+    value:
+      left: ../../assets/projects/northlight-data-platform/body/2/value/left.jpg
+      right: ../../assets/projects/northlight-data-platform/body/2/value/right.jpg
+      caption: {}
+  - discriminant: section
+    value:
+      heading:
+        zh: 图表语法
+        en: A chart grammar
+      text:
+        zh: 系统根据字段类型与数量推荐图表，并强制使用一致的配色与标注规则。
+        en: >-
+          The system recommends charts from field types and counts, and enforces
+          consistent colour and labelling rules.
+  - discriminant: threeUp
+    value:
+      a: ../../assets/projects/northlight-data-platform/body/4/value/a.jpg
+      b: ../../assets/projects/northlight-data-platform/body/4/value/b.jpg
+      c: ../../assets/projects/northlight-data-platform/body/4/value/c.jpg
+      caption: {}

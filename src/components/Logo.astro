@@ -1,0 +1,23 @@
+---
+// vlas. wordmark — geometric monoline; strokes follow currentColor, the dot stays accent.
+interface Props { class?: string; title?: string }
+const { class: cls = '', title = 'vlas' } = Astro.props;
+const clip = `logo-${Math.random().toString(36).slice(2, 8)}`;
+---
+<svg class:list={['logo', cls]} viewBox="-6 -6 232 112" fill="none" role="img" aria-label={title}>
+  <defs><clipPath id={clip}><rect x="-10" y="-10" width="66" height="130" /></clipPath></defs>
+  <g stroke="currentColor" stroke-width="12" stroke-linejoin="miter">
+    <path d="M2 44 L25 100 L57 26" clip-path={`url(#${clip})`} />
+    <path d="M56 0 V100" />
+    <circle cx="102" cy="72" r="22" />
+    <path d="M124 46 V100" />
+    <path d="M176 52 C170 44 146 44 146 58 C146 72 178 68 178 86 C178 100 152 100 146 90" />
+  </g>
+  <circle class="logo__dot" cx="202" cy="94" r="7" fill="var(--accent)" />
+</svg>
+<style>
+  .logo { width: auto; height: 22px; overflow: visible; }
+  .logo__dot { transform-box: fill-box; transform-origin: center; }
+  :global(a:hover) > .logo .logo__dot { animation: hop 200ms var(--ease); }
+  @keyframes hop { 50% { transform: translateY(-6px); } }
+</style>

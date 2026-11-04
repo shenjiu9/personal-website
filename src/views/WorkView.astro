@@ -1,0 +1,248 @@
+---
+import Base from '@/layouts/Base.astro';
+import { Picture, getImage } from 'astro:assets';
+import { t, href, pick, type Lang } from '@/i18n';
+import { getProjects, getCategories, catName, queryKey, type Dimension } from '@/lib/content';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const [projects, cats] = await Promise.all([getProjects(), getCategories()]);
+
+// only categories that have at least one project
+const used = (dim: Dimension) => {
+  const ids = new Set(projects.flatMap((p) => p.data[dim]));
+  return [...cats[dim].values()].filter((c) => ids.has(c.id));
+};
+const fieldTags = used('fields');
+const extra: { dim: Dimension; label: string }[] = [
+  { dim: 'industries', label: d.work.industries },
+  { dim: 'platforms', label: d.work.platforms },
+  { dim: 'projectTypes', label: d.work.projectTypes },
+];
+const items = await Promise.all(
+  projects.map(async (p) => ({
+    p,
+    preview: (await getImage({ src: p.data.cover, width: 480, format: 'webp' })).src,
+  })),
+);
+---
+<Base lang={lang} title={d.work.title} description={d.work.intro} path="/work">
+  <section class="wrap work-head">
+    <h1 class="h1">{d.work.title}</h1>
+    <p class="muted prose">{d.work.intro}</p>
+  </section>
+
+  <div class="wrap filters" data-filters>
+    <div class="filters__row">
+      <div class="tags" role="group" aria-label={d.work.colField}>
+        <button type="button" class="tag" data-dim="field" data-value="" aria-pressed="true">{d.work.all}</button>
+        {fieldTags.map((c) => <button type="button" class="tag" data-dim="field" data-value={c.id} aria-pressed="false">{catName(c, lang)}</button>)}
+      </div>
+      <details class="more" data-more>
+        <summary class="tag">{d.work.more} <span class="more__count meta" data-more-count></span></summary>
+        <div class="more__panel">
+          {extra.map(({ dim, label }) => (
+            <fieldset class="more__group">
+              <legend class="meta">{label}</legend>
+              <div class="tags">
+                {used(dim).map((c) => <button type="button" class="tag tag--small" data-dim={queryKey[dim]} data-value={c.id} aria-pressed="false">{catName(c, lang)}</button>)}
+              </div>
+            </fieldset>
+          ))}
+          <button type="button" class="link meta" data-clear>{d.work.clear}</button>
+        </div>
+      </details>
+    </div>
+    <div class="filters__bar">
+      <p class="meta" aria-live="polite" data-count data-template={d.work.count(0)} data-template-one={d.work.count(1)}>{d.work.count(projects.length)}</p>
+      <div class="view-toggle meta" role="group" aria-label="View">
+        <button type="button" data-view-btn="grid" aria-pressed="true">{d.work.grid}</button>
+        <button type="button" data-view-btn="list" aria-pressed="false">{d.work.list}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="list-head meta" aria-hidden="true">
+      <span>{d.work.colProject}</span><span>{d.work.colClient}</span><span>{d.work.colField}</span><span>{d.work.colYear}</span>
+    </div>
+    <ul class="work" data-work data-view="grid">
+      {items.map(({ p, preview }, i) => {
+        const data = p.data;
+        const fieldNames = data.fields.slice(0, 2).map((f) => catName(cats.fields.get(f), lang)).join(' · ');
+        return (
+          <li
+            class="work__item"
+            data-reveal
+            data-field={data.fields.join(' ')}
+            data-industry={data.industries.join(' ')}
+            data-platform={data.platforms.join(' ')}
+            data-type={data.projectTypes.join(' ')}
+            data-preview={preview}
+          >
+            <a class="work__link" href={href(lang, `/work/${p.id}`)}>
+              <div class="work__media frame reveal-media" data-cursor>
+                <Picture src={data.cover} alt="" formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" loading={i < 3 ? 'eager' : 'lazy'} style={`view-transition-name: cover-${p.id}`} />
+              </div>
+              <span class="work__title"><span class="work__name">{pick(data.title, lang)}</span> <span class="arrow" aria-hidden="true">→</span></span>
+              <span class="work__client">{data.client}</span>
+              <span class="work__field">{fieldNames}</span>
+              <span class="work__year">{data.year}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+    <p class="empty muted" hidden data-empty>{d.work.empty}</p>
+  </div>
+  <div class="preview" aria-hidden="true" data-preview-float><img alt="" /></div>
+</Base>
+
+<style>
+  .work-head { padding-top: var(--s-12); padding-bottom: var(--s-6); display: grid; gap: var(--s-3); }
+  .filters { position: relative; z-index: 5; display: grid; gap: var(--s-2); margin-bottom: var(--s-6); }
+  .filters__row { position: relative; display: flex; flex-wrap: wrap; gap: var(--s-1); align-items: flex-start; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-1); }
+  .tag { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: var(--fs-small); cursor: pointer; transition: border-color var(--t-micro) var(--ease), background var(--t-micro) var(--ease), color var(--t-micro) var(--ease); list-style: none; }
+  .tag::-webkit-details-marker { display: none; }
+  .tag:hover { border-color: var(--fg); }
+  .tag[aria-pressed='true'] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .tag--small { min-height: 32px; padding: 4px 12px; font-size: 0.875rem; }
+  .more { position: static; }
+  .more[open] > summary { border-color: var(--fg); }
+  .more__count:empty { display: none; }
+  .more__count { color: var(--accent); }
+  .more__panel { position: absolute; right: 0; top: calc(100% + 8px); width: min(560px, 100%); background: var(--bg); border: 1px solid var(--line); padding: var(--s-3); display: grid; gap: var(--s-3); }
+  .more__group { border: 0; padding: 0; display: grid; gap: 10px; }
+  .more__panel > .link { justify-self: start; }
+  .filters__bar { display: flex; justify-content: space-between; align-items: center; padding-top: var(--s-2); border-top: 1px solid var(--line); }
+  .view-toggle { display: flex; gap: var(--s-2); }
+  .view-toggle button[aria-pressed='true'] { color: var(--fg); }
+  .view-toggle button { padding: 8px 0; }
+  .view-toggle button:hover { color: var(--accent); }
+
+  .work { display: grid; gap: var(--s-8) var(--col-gap); grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .work { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .work { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .work__item { transition: opacity 240ms var(--ease); }
+  .work__item.is-hidden { display: none; }
+  .work__item.is-fading { opacity: 0; }
+  .work__link { display: grid; gap: 6px; }
+  .work__media { aspect-ratio: 16 / 10; margin-bottom: 10px; }
+  .work__media :global(img) { transition: transform 700ms var(--ease); }
+  .work__link:hover .work__media :global(img) { transform: scale(1.03); }
+  .work__title { font-size: var(--fs-h3); font-weight: 540; line-height: 1.25; letter-spacing: -0.015em; }
+  .work__link:hover .arrow { color: var(--accent); }
+  .work__client, .work__field, .work__year { font-family: var(--font-mono); font-size: var(--fs-meta); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .work[data-view='grid'] .work__link { grid-template-columns: 1fr auto; column-gap: var(--s-2); }
+  .work[data-view='grid'] .work__media, .work[data-view='grid'] .work__title { grid-column: 1 / -1; }
+  .work[data-view='grid'] .work__field { display: none; }
+
+  .list-head { display: none; }
+  /* list view */
+  .work[data-view='list'] { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--line); }
+  .work[data-view='list'] .work__media { display: none; }
+  .work[data-view='list'] .work__link { grid-template-columns: 1fr auto; padding-block: var(--s-3); border-bottom: 1px solid var(--line); align-items: baseline; column-gap: var(--s-2); }
+  .work[data-view='list'] .work__client, .work[data-view='list'] .work__field { display: none; }
+  .work[data-view='list'] .work__title { font-size: var(--fs-h3); }
+  @media (min-width: 768px) {
+    .work[data-view='list'] .work__link { grid-template-columns: 5fr 3fr 3fr 1fr; }
+    .work[data-view='list'] .work__client, .work[data-view='list'] .work__field { display: block; }
+    :global(.work-list-on) .list-head { display: grid; grid-template-columns: 5fr 3fr 3fr 1fr; column-gap: var(--s-2); padding-bottom: 10px; }
+  }
+  .work[data-view='list'] .work__year { text-align: right; }
+  .empty { padding-block: var(--s-8); }
+
+  .preview { position: fixed; left: 0; top: 0; z-index: 40; width: 280px; aspect-ratio: 16 / 10; pointer-events: none; opacity: 0; transform: translate3d(-999px, -999px, 0); transition: opacity 200ms var(--ease); background: var(--surface); overflow: hidden; }
+  .preview.is-on { opacity: 1; }
+  .preview img { width: 100%; height: 100%; object-fit: cover; }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-filters]')!;
+  const list = document.querySelector<HTMLElement>('[data-work]')!;
+  const items = [...list.querySelectorAll<HTMLElement>('.work__item')];
+  const count = document.querySelector<HTMLElement>('[data-count]')!;
+  const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+  const moreCount = document.querySelector<HTMLElement>('[data-more-count]')!;
+  const template = count.dataset.template!;
+  const keys = ['field', 'industry', 'platform', 'type'] as const;
+  const state: Record<string, string> = {};
+  const params = new URLSearchParams(location.search);
+  keys.forEach((k) => (state[k] = params.get(k) ?? ''));
+  let view = params.get('view') ?? (() => { try { return localStorage.getItem('work-view'); } catch { return null; } })() ?? 'grid';
+
+  function render(animate = true) {
+    // buttons
+    root.querySelectorAll<HTMLButtonElement>('[data-dim]').forEach((b) => b.setAttribute('aria-pressed', String(state[b.dataset.dim!] === b.dataset.value)));
+    const extra = (['industry', 'platform', 'type'] as const).filter((k) => state[k]).length;
+    moreCount.textContent = extra ? String(extra) : '';
+    // items
+    let shown = 0;
+    for (const el of items) {
+      const ok = keys.every((k) => !state[k] || (el.dataset[k] ?? '').split(' ').includes(state[k]));
+      if (ok) shown++;
+      if (animate && ok && el.classList.contains('is-hidden')) {
+        el.classList.add('is-fading');
+        el.classList.remove('is-hidden');
+        requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('is-fading')));
+      } else el.classList.toggle('is-hidden', !ok);
+    }
+    count.textContent = shown === 1 ? count.dataset.templateOne! : template.replace('0', String(shown));
+    empty.hidden = shown > 0;
+    // view
+    list.dataset.view = view;
+    document.body.classList.toggle('work-list-on', view === 'list');
+    document.querySelectorAll<HTMLButtonElement>('[data-view-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.viewBtn === view)));
+    // url
+    const q = new URLSearchParams();
+    keys.forEach((k) => state[k] && q.set(k, state[k]));
+    if (view === 'list') q.set('view', 'list');
+    const qs = q.toString();
+    history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+  }
+
+  root.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+    if (!btn) return;
+    if (btn.dataset.dim) {
+      const k = btn.dataset.dim;
+      state[k] = state[k] === btn.dataset.value ? '' : btn.dataset.value!;
+      if (k === 'field' && btn.dataset.value === '') state.field = '';
+    } else if (btn.hasAttribute('data-clear')) {
+      keys.forEach((k) => (state[k] = ''));
+      document.querySelector<HTMLDetailsElement>('[data-more]')!.open = false;
+    }
+    else if (btn.dataset.viewBtn) {
+      view = btn.dataset.viewBtn;
+      try { localStorage.setItem('work-view', view); } catch {}
+    } else return;
+    render();
+  });
+  // close "more" when clicking outside
+  const more = document.querySelector<HTMLDetailsElement>('[data-more]')!;
+  document.addEventListener('click', (e) => { if (more.open && !more.contains(e.target as Node)) more.open = false; });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') more.open = false; });
+  render(false);
+
+  // list view: floating cover preview next to the cursor (fine pointers only)
+  if (matchMedia('(pointer: fine)').matches) {
+    const float = document.querySelector<HTMLElement>('[data-preview-float]')!;
+    const img = float.querySelector('img')!;
+    let x = 0, y = 0, raf = 0;
+    const move = () => { float.style.transform = `translate3d(${x + 24}px, ${y - 90}px, 0)`; raf = 0; };
+    list.addEventListener('pointermove', (e) => {
+      if (list.dataset.view !== 'list') return;
+      x = e.clientX; y = e.clientY;
+      if (!raf) raf = requestAnimationFrame(move);
+    });
+    items.forEach((el) => {
+      el.addEventListener('pointerenter', () => {
+        if (list.dataset.view !== 'list') return;
+        img.src = el.dataset.preview!;
+        float.classList.add('is-on');
+      });
+      el.addEventListener('pointerleave', () => float.classList.remove('is-on'));
+    });
+  }
+</script>

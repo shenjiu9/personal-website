@@ -1,0 +1,100 @@
+internalName: Kiln 陶作
+status: published
+featured: true
+order: 2
+title:
+  zh: Kiln 陶作 品牌焕新
+  en: Kiln Ceramics Rebrand
+summary:
+  zh: 为一家独立陶艺工作室打造从标志、包装到线下空间的完整品牌识别。
+  en: >-
+    A complete identity for an independent ceramics studio, from mark and
+    packaging to the retail space.
+client: Kiln Studio
+year: 2025
+role:
+  zh: 品牌设计师
+  en: Brand Designer
+services:
+  - zh: 品牌策略
+    en: Brand strategy
+  - zh: 视觉识别
+    en: Visual identity
+  - zh: 包装设计
+    en: Packaging
+  - zh: 空间导视
+    en: Wayfinding
+cover: ../../assets/projects/kiln-ceramics-rebrand/cover.jpg
+coverPortrait: true
+hero: ../../assets/projects/kiln-ceramics-rebrand/hero.jpg
+challenge:
+  zh: 工作室作品很有辨识度，但品牌形象零散，线上线下没有统一的语言，难以进入精品买手店。
+  en: >-
+    The work was distinctive, but the brand was fragmented across channels,
+    which kept it out of boutique retailers.
+solution:
+  zh: 以"窑口"的半圆为核心图形，延展出一套温暖克制的色彩、字体与包装系统。
+  en: >-
+    We built the identity around the half-circle of a kiln mouth, extending it
+    into a warm, restrained system of colour, type and packaging.
+result:
+  zh: 新品牌发布后进入 12 家买手店，线上客单价提升 27%。
+  en: >-
+    After launch the studio entered 12 boutique stores and online order value
+    rose 27%.
+fields:
+  - brand-identity
+  - packaging
+  - graphic-design
+platforms:
+  - print
+  - physical-space
+industries:
+  - real-estate-home
+projectTypes:
+  - commercial
+body:
+  - discriminant: section
+    value:
+      heading:
+        zh: 品牌核心
+        en: Brand core
+      text:
+        zh: 我们从窑的形状出发：一个半圆，既是开口，也是日出。
+        en: >-
+          We started from the shape of the kiln: a half-circle that reads as
+          both an opening and a sunrise.
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/kiln-ceramics-rebrand/body/1/value/image.jpg
+      caption: {}
+  - discriminant: twoUp
+    value:
+      left: ../../assets/projects/kiln-ceramics-rebrand/body/2/value/left.jpg
+      right: ../../assets/projects/kiln-ceramics-rebrand/body/2/value/right.jpg
+      caption:
+        zh: 标志与辅助图形
+        en: Mark and supporting graphics
+  - discriminant: section
+    value:
+      heading:
+        zh: 包装与物料
+        en: Packaging & collateral
+      text:
+        zh: 包装使用再生纸浆与单色印刷，成本比旧方案降低 18%。
+        en: >-
+          Packaging uses recycled pulp and single-colour print, 18% cheaper than
+          before.
+  - discriminant: textImage
+    value:
+      image: ../../assets/projects/kiln-ceramics-rebrand/body/4/value/image.jpg
+      text:
+        zh: 每一件作品附带一张手写编号卡，让器物与人之间多一层联系。
+        en: >-
+          Every piece ships with a hand-numbered card, adding one more link
+          between object and owner.
+      imageSide: left
+  - discriminant: fullImage
+    value:
+      image: ../../assets/projects/kiln-ceramics-rebrand/body/5/value/image.jpg
+      caption: {}

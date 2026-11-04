@@ -1,0 +1,115 @@
+---
+import Base from '@/layouts/Base.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import HeroArt from '@/components/HeroArt.astro';
+import Marquee from '@/components/Marquee.astro';
+import { Image } from 'astro:assets';
+import { t, href, pick, type Lang } from '@/i18n';
+import { getProjects, getCategories, getSettings, catName } from '@/lib/content';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const [projects, cats, settings] = await Promise.all([getProjects(), getCategories(), getSettings()]);
+const featured = projects.filter((p) => p.data.featured).slice(0, 6);
+const marquee = [...cats.fields.values()].map((c) => catName(c, lang));
+// Asymmetric rhythm: alternate left/right; landscape covers span 7 cols, portrait covers 4.
+const layout = (portrait: boolean, i: number) => {
+  const span = portrait ? 4 : 7;
+  const right = i % 2 === 1;
+  const start = right ? 13 - span : i % 4 === 2 ? 2 : 1;
+  return `--col:${start} / span ${span};--mt:${right ? (portrait ? '16vh' : '10vh') : '0px'}`;
+};
+---
+<Base lang={lang} path="/">
+  <section class="hero wrap">
+    <div class="hero__art" data-parallax data-hero-gl><HeroArt /></div>
+    <h1 class="hero__title display">
+      {d.hero.lines.map((line, i) => <span class="hero__line"><span style={`--i:${i}`}>{line}</span></span>)}
+    </h1>
+    <p class="hero__sub">
+      <span>vlas — {d.hero.role}</span>
+      {pick(settings.location, lang) && <span class="muted">{pick(settings.location, lang)}</span>}
+      <span class="hero__status"><span class:list={['dot', { 'dot--off': !settings.available, 'dot--pulse': settings.available }]} aria-hidden="true" />{settings.available ? d.hero.available : d.hero.unavailable}</span>
+    </p>
+  </section>
+
+  <Marquee items={marquee} />
+
+  <section class="wrap featured" aria-labelledby="featured-title">
+    <div class="section-head" data-reveal><h2 id="featured-title" class="meta" data-scramble>{d.home.selected}</h2><span class="meta">{String(featured.length).padStart(2, '0')}</span></div>
+    <ul class="featured__grid">
+      {featured.map((p, i) => (
+        <li class="featured__item" style={layout(p.data.coverPortrait, i)}>
+          <ProjectCard project={p} lang={lang} fieldMap={cats.fields} index={i} eager={i < 2} sizes="(min-width: 1024px) 58vw, 100vw" />
+        </li>
+      ))}
+    </ul>
+    <a class="all-work h2" href={href(lang, '/work')}><span class="link">{d.home.allWork}</span> <span class="arrow" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="wrap section" aria-labelledby="services-title">
+    <div class="section-head" data-reveal><h2 id="services-title" class="meta" data-scramble>{d.home.services}</h2></div>
+    <ol class="services">
+      {settings.services.map((s, i) => (
+        <li class="services__row grid" data-reveal>
+          <span class="meta services__n">{String(i + 1).padStart(2, '0')}</span>
+          <span class="h2 services__title">{pick(s.title, lang)}</span>
+          <span class="muted services__desc">{pick(s.description, lang)}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  {settings.clients.length > 0 && (
+    <section class="wrap section" aria-labelledby="clients-title">
+      <div class="section-head" data-reveal><h2 id="clients-title" class="meta" data-scramble>{d.home.clients}</h2></div>
+      <ul class="clients" data-reveal>
+        {settings.clients.map((c) => (
+          <li>{c.logo ? <Image src={c.logo} alt={c.name} height={32} class="clients__logo" /> : <span>{c.name}</span>}</li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero { position: relative; min-height: min(78vh, 820px); display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s-4); padding-top: var(--s-6); padding-bottom: var(--s-8); }
+  .hero__art { width: min(72%, 340px); margin-left: auto; margin-bottom: calc(var(--s-4) * -1); }
+  .hero__title, .hero__sub { position: relative; z-index: 1; }
+  .hero__art :global(.art) { transition: opacity 900ms var(--ease); }
+  .hero__art :global(.hero-gl) { position: absolute; inset: -12%; width: 124%; height: 124%; opacity: 0; transition: opacity 1200ms var(--ease); }
+  .hero__art:global(.gl-ready) :global(.hero-gl) { opacity: 1; }
+  .hero__art:global(.gl-ready) :global(.art .layer:not(:first-child)) { opacity: 0; transition: opacity 700ms var(--ease); }
+  :global(:root[lang='en']) .hero__title { font-size: clamp(2.5rem, 1rem + 5.4vw, 6.25rem); }
+  @media (min-width: 1024px) {
+    .hero { padding-top: var(--s-12); }
+    .hero__art { position: absolute; right: var(--gutter); top: 50%; translate: 0 -52%; width: min(44vw, 620px); margin: 0; }
+  }
+  .hero__title { font-weight: 560; max-width: 15em; }
+  .hero__line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+  .hero__line > span { display: inline-block; animation: line-in 900ms var(--ease) both; animation-delay: calc(var(--i) * 90ms + 60ms); }
+  @keyframes line-in { from { transform: translateY(105%); } to { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero__line > span { animation: fade 300ms linear both; } @keyframes fade { from { opacity: 0; } } }
+  .hero__sub { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); font-size: var(--fs-small); }
+  .hero__status { display: inline-flex; align-items: center; gap: 8px; }
+
+  .featured__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-10) var(--col-gap); }
+  @media (min-width: 1024px) {
+    .featured__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); row-gap: var(--s-12); }
+    .featured__item { grid-column: var(--col); margin-top: var(--mt); align-self: start; }
+  }
+  .all-work { display: inline-flex; gap: 12px; margin-top: var(--s-12); font-weight: 540; }
+  .all-work:hover .arrow { color: var(--accent); }
+
+  .services__row { align-items: baseline; row-gap: 8px; padding-block: var(--s-3); border-bottom: 1px solid var(--line); }
+  .services__n { grid-column: 1 / -1; }
+  .services__title { grid-column: 1 / -1; font-weight: 520; }
+  .services__desc { grid-column: 1 / -1; }
+  @media (min-width: 1024px) {
+    .services__n { grid-column: 1 / span 1; }
+    .services__title { grid-column: 2 / span 6; }
+    .services__desc { grid-column: 9 / span 4; }
+  }
+  .clients { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-8); font-size: var(--fs-h3); font-weight: 520; color: var(--muted); letter-spacing: -0.01em; }
+  :global(.clients__logo) { height: 32px; width: auto; filter: grayscale(1); opacity: 0.7; }
+</style>

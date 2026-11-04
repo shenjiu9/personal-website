@@ -1,0 +1,7 @@
+---
+interface Props { email: string; label?: string; copied: string; class?: string }
+const { email, label, copied, class: cls } = Astro.props;
+---
+<button type="button" class:list={['copy-email', cls]} data-copy-email={email} data-copied={copied} aria-live="polite">
+  <span class="copy-email__label">{label ?? email}</span>
+</button>
